@@ -1,0 +1,17 @@
+{
+	"user": "yiff",
+	"repo": "codyDM-sampServer",
+	"entry": "gamemodes\\test.pwn",
+	"output": "gamemodes/gamemodes\\test.amx",
+	"dependencies": [
+		"pawn-lang/samp-stdlib",
+		"Southclaws/zcmd"
+	],
+	"local": true,
+	"runtime": {
+		"version": "0.3.7",
+		"mode": "server",
+		"rcon_password": "password",
+		"port": 7777
+	}
+}
