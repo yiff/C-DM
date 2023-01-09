@@ -7,6 +7,7 @@ Installation Instructions:
 
 Use Windows, I haven't figured out how to do this on Linux yet...
 
+Download 'Unicode.dll' from this link, and drag it into the '../components' folder. I tried to get it to upload to GitHub, but it was too big.
 
 Make a folder anywhere on your computer and drag all of this into it. Run omp-server.exe.
 
