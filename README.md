@@ -1,63 +1,47 @@
-# codyDM-sampServer
+# Cody's Deathmatch Server!
+C-DM v1.0 — an open.mp server and gamemode for use with GTA SA and the SA-MP client, ready to be deployed out of the box. Written in Pawno, using the qawno text editor as provided by the open.mp team.
 
-[![sampctl](https://img.shields.io/badge/sampctl-codyDM--sampServer-2f2f2f.svg?style=for-the-badge)](https://github.com/yiff/codyDM-sampServer)
 
-<!--
-Short description of your library, why it's useful, some examples, pictures or
-videos. Link to your forum release thread too.
+Installation Instructions:
 
-Remember: You can use "forumfmt" to convert this readme to forum BBCode!
 
-What the sections below should be used for:
+Use Windows, I haven't figured out how to do this on Linux yet...
 
-`## Installation`: Leave this section un-edited unless you have some specific
-additional installation procedure.
 
-`## Testing`: Whether your library is tested with a simple `main()` and `print`,
-unit-tested, or demonstrated via prompting the player to connect, you should
-include some basic information for users to try out your code in some way.
+Make a folder anywhere on your computer and drag all of this into it. Run omp-server.exe.
 
-And finally, maintaining your version number`:
 
-* Follow [Semantic Versioning](https://semver.org/)
-* When you release a new version, update `VERSION` and `git tag` it
-* Versioning is important for sampctl to use the version control features
+You can now open SA-MP and add "localhost:7777" to your favorites and connect to your own locally hosted deathmatch server.
 
-Happy Pawning!
--->
 
-## Installation
+Check out all the commands available with /help, or if you want, you can open up the '../gamemodes/test.pwn' to check out the script for yourself!
 
-Simply install to your project:
 
-```bash
-sampctl package install yiff/codyDM-sampServer
-```
+If you want to make changes to the script, or make your own game-mode:
 
-Include in your code and begin using the library:
 
-```pawn
-#include <codyDM-sampServer>
-```
+Go to the '../qawno' folder and drop a file there with .pwn at the end.
 
-## Usage
 
-<!--
-Write your code documentation or examples here. If your library is documented in
-the source code, direct users there. If not, list your API and describe it well
-in this section. If your library is passive and has no API, simply omit this
-section.
--->
+The one included for the C-DM gamemode is called 'test.pwn' in that same '../qawno' folder.
 
-## Testing
 
-<!--
-Depending on whether your package is tested via in-game "demo tests" or
-y_testing unit-tests, you should indicate to readers what to expect below here.
--->
+Open up the '.pwn' file with 'qawno.exe' and start editing lines, making changes to your heart's content.
 
-To test, simply run the package:
 
-```bash
-sampctl package run
-```
+You can check the open.mp documentation, an archival of years worth of SA-MP pawn wiki functions among other things, for reference during your scripting.
+
+
+Once you're done, Ctrl-S to save your '.pwn' file from 'qawno.exe' and then open up a Powershell, CMD.exe, or Windows Terminal with-in the '../qawno' directory.
+
+
+Type '.\pawncc.exe "test.pwn"' or '.\pawncc.exe "yourPWNfileNameHere.pwn"' to compile your pawno script, which will output an '.amx' file with the same name as your '.pwn' file.
+
+
+Drag your '.pwn' and compiled '.amx' file of the same name to the '../gamemodes' folder, and then go back to the main directory of the folder and edit your 'config.json' file.
+
+
+Change the line that says "mode" under "game". Make it the name of your ".pwn" file. In this instance, C-DM uses the file name "test.amx" and "test.pwn" so the mode to start it would be "test".
+
+
+Now, you should be able to save that 'config.json' file and launch 'omp-server.exe' to get your server up and running with the new or edited ".pwn" gamemode.
