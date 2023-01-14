@@ -60,7 +60,7 @@ public OnGameModeExit()
 
 public OnPlayerConnect(playerid)
 {
-	new string[64], playerName[MAX_PLAYER_NAME];
+	new string[128], playerName[MAX_PLAYER_NAME];
 	GetPlayerName(playerid, playerName, MAX_PLAYER_NAME);
 	format(string, sizeof string, "%s has joined the server! Use '/help' to see the commands.", playerName);
 	SendClientMessageToAll(COLOR_WHITE, string);
@@ -71,7 +71,7 @@ public OnPlayerConnect(playerid)
 
 public OnPlayerDisconnect(playerid, reason)
 {
-	new szString[64],
+	new szString[128],
 	playerName[MAX_PLAYER_NAME];
 	
 	GetPlayerName(playerid, playerName, MAX_PLAYER_NAME);
@@ -152,7 +152,7 @@ public OnPlayerSpawn(playerid)
 		SetPlayerPos(playerid, RandomSpawn[rand][0], RandomSpawn[rand][1], RandomSpawn[rand][2]);
 		SetPlayerFacingAngle(playerid, RandomSpawn[rand][3]);
 		SetPlayerSkin(playerid, RandomSkin[randSkin]);
-		
+
 		// custom weapons for arena 1 aka grove street
 		GivePlayerWeapon(playerid, 24, 500); // deagle
 	
@@ -246,13 +246,12 @@ public OnPlayerSpawn(playerid)
 		// team 0 (crim) or team 1 (cops)
 		if(GetPlayerTeam(playerid) == 0) // if player selected is on criminal team
 		{
-			new Float:RandomSpawn[][5] =
+			new Float:RandomSpawn[][4] =
 			{
 				{2363.0452, -1120.8047, 1050.8750, 223.7332},
 				{2373.3774, -1122.6882, 1050.8750, 144.4296},
 				{2372.4502, -1134.9718, 1050.8750, 64.7683},
-				{2359.3516, -1134.1257, 1050.8750, 296.8062},
-				{257.9478, -40.4115, 1002.0234, 96.5626}
+				{2359.3516, -1134.1257, 1050.8750, 296.8062}
 			};
 			
 			new rand = random(sizeof(RandomSpawn));
@@ -277,7 +276,7 @@ public OnPlayerSpawn(playerid)
 			SetPlayerPos(playerid, RandomSpawn[rand][0], RandomSpawn[rand][1], RandomSpawn[rand][2]);
 			SetPlayerFacingAngle(playerid, RandomSpawn[rand][3]);
 			SetPlayerSkin(playerid, RandomSkin[randSkin]);
-	
+
 			// custom weapons for crims in arena 4 aka whitewood estates SWAT raid
 			GivePlayerWeapon(playerid, 25, 500); // shotgun
 			GivePlayerWeapon(playerid, 24, 500); // deagle
@@ -303,10 +302,156 @@ public OnPlayerSpawn(playerid)
 			SetPlayerPos(playerid, RandomSpawn[rand][0], RandomSpawn[rand][1], RandomSpawn[rand][2]);
 			SetPlayerFacingAngle(playerid, RandomSpawn[rand][3]);
 			SetPlayerSkin(playerid, 285);
-	
+
 			// custom weapons for SWAT in arena 4 aka whitewood estates SWAT raid
 			GivePlayerWeapon(playerid, 31, 500); // m4
 			GivePlayerWeapon(playerid, 25, 500); // shotgun
+			GivePlayerWeapon(playerid, 24, 500); // deagle
+
+			return 1;
+			}
+		}
+		
+		if(GetPlayerScore(playerid) == 5) // if they're in arena 5 aka team deathmatch burgershot robbery
+	{
+		// team 0 (burger shot) or team 1 (cluckin bell)
+		if(GetPlayerTeam(playerid) == 0) // if player selected is on burger shot team
+		{
+			new Float:RandomSpawn[][5] =
+			{
+				{378.5316, -69.9393, 1001.5078,110.9905},
+				{378.8326, -59.0732, 1001.5078,160.9354},
+				{377.6044, -65.6128, 1001.5078, 133.0973},
+				{374.0124, -74.4330, 1001.5078, 59.5249},
+				{371.0925, -57.4535, 1001.5195, 158.0112}
+			};
+			
+			new rand = random(sizeof(RandomSpawn));
+			
+			new RandomSkin[] =
+			{
+				168,
+				209,
+				205,
+				293
+			};
+			
+			new randSkin = random(sizeof(RandomSkin));
+			
+			SetPlayerVirtualWorld(playerid, 5);
+			SetPlayerInterior(playerid, 10);
+			SetPlayerPos(playerid, RandomSpawn[rand][0], RandomSpawn[rand][1], RandomSpawn[rand][2]);
+			SetPlayerFacingAngle(playerid, RandomSpawn[rand][3]);
+			SetPlayerSkin(playerid, RandomSkin[randSkin]);
+	
+			// custom weapons for burger shot workers in arena 5 aka burgershot battles
+			GivePlayerWeapon(playerid, 25, 500); // shotgun
+			GivePlayerWeapon(playerid, 24, 500); // deagle
+	
+			return 1;
+			}
+
+		if(GetPlayerTeam(playerid) == 1) // if player selected is on cluckin bell team
+		{
+			new Float:RandomSpawn[][5] =
+			{
+				{1164.5707, 2079.3660, 10.8203, 174.8226},
+				{1158.3538, 2067.2661, 10.8203, 7.5597},
+				{1164.3680, 2067.7334, 10.8203, 42.2989},
+				{1175.9688, 2065.2073, 11.0625, 22.6239},
+				{1164.1989, 2067.3752, 10.8203, 43.8737}
+			};
+			
+			new rand = random(sizeof(RandomSpawn));
+	
+			SetPlayerVirtualWorld(playerid, 5);
+			SetPlayerInterior(playerid, 0);
+			SetPlayerPos(playerid, RandomSpawn[rand][0], RandomSpawn[rand][1], RandomSpawn[rand][2]);
+			SetPlayerFacingAngle(playerid, RandomSpawn[rand][3]);
+			SetPlayerSkin(playerid, 167);
+	
+			// custom weapons for cluckin bell workers in arena 5 aka burgershot battles
+			GivePlayerWeapon(playerid, 25, 500); // shotgun
+			GivePlayerWeapon(playerid, 24, 500); // deagle
+
+			return 1;
+			}
+		}
+		
+		if(GetPlayerScore(playerid) == 6) // if they're in arena 6 aka LOCALS ONLY santa maria tdm
+	{
+		// team 0 (skins) or team 1 (mexicans)
+		if(GetPlayerTeam(playerid) == 0) // if player selected is on skins team
+		{
+			new Float:RandomSpawn[][5] =
+			{
+				{647.8918, -1765.4397, 13.2731, 181.4305},
+				{651.3620, -1775.2321, 13.3374, 132.6553},
+				{662.3235, -1787.9452, 12.4751, 103.2969},
+				{643.7849, -1789.7572, 11.7984, 21.5369},
+				{665.3388, -1765.9561, 13.6257, 76.2526}
+			};
+			
+			new rand = random(sizeof(RandomSpawn));
+			
+			new RandomSkin[] =
+			{
+				23,
+				154,
+				170,
+				177,
+				191,
+				261
+			};
+			
+			new randSkin = random(sizeof(RandomSkin));
+			
+			SetPlayerVirtualWorld(playerid, 6);
+			SetPlayerInterior(playerid, 0);
+			SetPlayerPos(playerid, RandomSpawn[rand][0], RandomSpawn[rand][1], RandomSpawn[rand][2]);
+			SetPlayerFacingAngle(playerid, RandomSpawn[rand][3]);
+			SetPlayerSkin(playerid, RandomSkin[randSkin]);
+
+			// custom weapons for skins in arena 6 aka LOCALS ONLY santa maria tdm
+			GivePlayerWeapon(playerid, 33, 500); // country rifle aka cuntgun
+			GivePlayerWeapon(playerid, 24, 500); // deagle
+	
+			return 1;
+			}
+
+		if(GetPlayerTeam(playerid) == 1) // if player selected is on mexicans team
+		{
+			new Float:RandomSpawn[][5] =
+			{
+				{471.1909, -1758.0557, 5.6072, 354.4272},
+				{476.3249, -1748.8619, 9.3771, 186.9302},
+				{472.2213, -1772.1322, 14.1200, 285.6509},
+				{563.0250, -1763.8529, 5.7946, 224.6185},
+				{522.7793, -1811.2328, 6.5781, 23.4603}
+			};
+			
+			new rand = random(sizeof(RandomSpawn));
+			
+			new RandomSkin[] =
+			{
+				30,
+				47,
+				48,
+				273,
+				41,
+				116
+			};
+			
+			new randSkin = random(sizeof(RandomSkin));
+	
+			SetPlayerVirtualWorld(playerid, 6);
+			SetPlayerInterior(playerid, 0);
+			SetPlayerPos(playerid, RandomSpawn[rand][0], RandomSpawn[rand][1], RandomSpawn[rand][2]);
+			SetPlayerFacingAngle(playerid, RandomSpawn[rand][3]);
+			SetPlayerSkin(playerid, RandomSkin[randSkin]);
+
+			// custom weapons for mexicans in arena 6 aka LOCALS ONLY santa maria tdm
+			GivePlayerWeapon(playerid, 33, 500); // country rifle aka cuntgun
 			GivePlayerWeapon(playerid, 24, 500); // deagle
 
 			return 1;
@@ -389,6 +534,8 @@ CMD:help(playerid, params[])
 	SendClientMessage(playerid, COLOR_WHITE, "[-- General commands! --]");
 	SendClientMessage(playerid, COLOR_WHITE, "/me - It's the roleplay one... You know this!");
 	SendClientMessage(playerid, COLOR_WHITE, "/cls - Clears your own chat box!");
+	SendClientMessage(playerid, COLOR_WHITE, "/playsound - Lets you play a sound by ID!");
+	SendClientMessage(playerid, COLOR_WHITE, "/stopsound - Lets you stop sounds that you're playing!");
 	SendClientMessage(playerid, COLOR_WHITE, " ");
 	SendClientMessage(playerid, COLOR_WHITE, "[-- Freeroam lobby commands! --]");
 	SendClientMessage(playerid, COLOR_WHITE, "/spawn - Respawn yourself in freeroam mode.");
@@ -400,6 +547,27 @@ CMD:help(playerid, params[])
 	SendClientMessage(playerid, COLOR_WHITE, "[-- Lobby-specific commands! --]");
 	SendClientMessage(playerid, COLOR_WHITE, "/lobby - Lets you pick to join either a specific deathmatch arena or freeroam.");
 	SendClientMessage(playerid, COLOR_WHITE, "/changeteam - Lets you pick your team depending on what arena you're in.");
+	return 1;
+}
+// play and stop sound commands!
+CMD:playsound(playerid, params[])
+{
+	new id;
+	
+	if (sscanf(params, "i", id) != 0)
+	{
+		SendClientMessage(playerid, COLOR_WHITE, "Usage: /playsound <id> and /stopsound to stop it.");
+		SendClientMessage(playerid, COLOR_WHITE, "My personal favorites: 141, 142");
+	    return 1;
+	}
+	
+	PlayerPlaySound(playerid, id, 0.0, 0.0, 0.0);
+	return 1;
+}
+
+CMD:stopsound(playerid, params[])
+{
+	PlayerPlaySound(playerid, 0, 0.0, 0.0, 0.0);
 	return 1;
 }
 
@@ -487,7 +655,7 @@ CMD:spawn(playerid, params[])
 // change team command
 CMD:changeteam(playerid, params[])
 {
-	if(GetPlayerScore(playerid) < 4) // if score is less than 4, you can't do the cmd
+	if(GetPlayerScore(playerid) < 4) // if score is less than 4, you can't do the cmd bcuz any arena less than 4 is free for alls or freeroam
 	{
 		SendClientMessage(playerid, COLOR_WHITE, "You can't change your team in this arena! You can only change teams in the team deathmatch arenas.");
 		return 1;
@@ -505,6 +673,29 @@ CMD:changeteam(playerid, params[])
 				SendClientMessage(playerid, COLOR_WHITE, "[-- Teams List --]");
 				SendClientMessage(playerid, COLOR_WHITE, "0 - Criminals");
 				SendClientMessage(playerid, COLOR_WHITE, "1 - SWAT Team");
+				return 1;
+			}
+			
+			if(id > 3)
+			{
+				SendClientMessage(playerid, COLOR_WHITE, "That's an invalid Team ID for this arena. Check '/changeteam' again.");
+				return 1;
+			}
+			
+			SetPlayerTeam(playerid, id);
+			SpawnPlayer(playerid);
+		}
+		
+		if(GetPlayerScore(playerid) == 5) // if player has a score of 4, meaning they're in the burgershot battles team deathmatch
+		{
+			new id;
+			
+			if (sscanf(params, "i", id) != 0)
+			{
+				SendClientMessage(playerid, COLOR_WHITE, " ");
+				SendClientMessage(playerid, COLOR_WHITE, "[-- Teams List --]");
+				SendClientMessage(playerid, COLOR_WHITE, "0 - Burgershot");
+				SendClientMessage(playerid, COLOR_WHITE, "1 - Cluckin' Bell");
 				return 1;
 			}
 			
@@ -616,6 +807,7 @@ CMD:shotty(playerid, params[])
 		return 1;
 	}
 }
+
 // skin changing command
 CMD:skin(playerid, params[])
 {
@@ -665,10 +857,10 @@ CMD:v(playerid, params[])
 		
 		new Float:x, Float:y, Float:z;
 		GetPlayerPos(playerid, x, y, z);
-		AddStaticVehicle(id, x, y, z, 90.0, -1, -1);
+		AddStaticVehicle(id, x, y, z, 90.0, -1, -1); // need to fix this later, doesn't delete cars after spawn and will keep respawning new ones in same place after destroyed
 		return 1;
 	}
-	
+
 	else
 	{
 		SendClientMessage(playerid, COLOR_WHITE, "You can't use this command in a deathmatch lobby. Go back to lobby 0, aka freeroam, to use this command and more!");
@@ -722,12 +914,14 @@ CMD:lobby(playerid, params[])
 		SendClientMessage(playerid, COLOR_WHITE, " ");
 		SendClientMessage(playerid, COLOR_WHITE, "[-- Team Deathmatch Arenas --]");
 		SendClientMessage(playerid,COLOR_WHITE, "4 - Whitewood Estates SWAT Raid");
+		SendClientMessage(playerid,COLOR_WHITE, "5 - Burgershot Battles");
+		SendClientMessage(playerid,COLOR_WHITE, "6 - Locals Only! Santa Maria");
 		SendClientMessage(playerid, COLOR_WHITE, " ");
 		SendClientMessage(playerid, COLOR_WHITE, "Usage: /lobby <id>");
 		return 1;
 	}
 	
-	if(lobbyid > 4)
+	if(lobbyid > 6)
 	{
 		SendClientMessage(playerid, COLOR_WHITE, "I haven't added a lobby with that ID yet! Try typing '/lobby' again for a list of the availble lobbies.");
 	}
@@ -800,6 +994,36 @@ CMD:lobby(playerid, params[])
 		// set the score so we identify which lobby they're in
 		SetPlayerScore(playerid, 4);
 		// set the player's team randomly to either team 0 (crim) or team 1 (cops)
+		SetPlayerTeam(playerid, random(2)); // set playerteam to 0 or 1 (hopefully...)
+		// all the lobby specific spawns/skins/weapons code is in OnPlayerSpawn func
+		SpawnPlayer(playerid);
+		
+		return 1;
+	}
+	
+	if(lobbyid == 5)
+	{
+		// burgershot battles team deathmatch
+		SetPlayerTime(playerid, 0, 0);
+		SetPlayerWeather(playerid, 0);
+		// set the score so we identify which lobby they're in
+		SetPlayerScore(playerid, 5);
+		// set the player's team randomly to either team 0 (burgershot) or team 1 (cluckin' bell)
+		SetPlayerTeam(playerid, random(2)); // set playerteam to 0 or 1 (hopefully...)
+		// all the lobby specific spawns/skins/weapons code is in OnPlayerSpawn func
+		SpawnPlayer(playerid);
+		
+		return 1;
+	}
+	
+	if(lobbyid == 6)
+	{
+		// locals only! santa maria team deathmatch
+		SetPlayerTime(playerid, 20, 0);
+		SetPlayerWeather(playerid, 17);
+		// set the score so we identify which lobby they're in
+		SetPlayerScore(playerid, 6);
+		// set the player's team randomly to either team 0 (burgershot) or team 1 (cluckin' bell)
 		SetPlayerTeam(playerid, random(2)); // set playerteam to 0 or 1 (hopefully...)
 		// all the lobby specific spawns/skins/weapons code is in OnPlayerSpawn func
 		SpawnPlayer(playerid);
@@ -1002,6 +1226,13 @@ public OnPlayerStreamOut(playerid, forplayerid)
 
 public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 {
+	if(issuerid != INVALID_PLAYER_ID && bodypart == 9)
+	{
+		// BOOM HEADSHOT
+		PlayerPlaySound(issuerid, 1190, 0.0, 0.0, 0.0);
+		SetPlayerHealth(playerid, 0.0);
+		return 1;
+	}
 	return 1;
 }
 
