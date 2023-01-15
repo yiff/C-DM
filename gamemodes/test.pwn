@@ -5,6 +5,15 @@
 #include <zcmd>
 #include <sscanf2>
 
+enum player_data
+{
+	player_skin, // save their skin so they dont get reset every time they spawn in freeroam
+	player_killstreak, // a counter for the player's killstreak
+	player_headshotsInArow // a counter for the player's HEADSHOT's in a row killstreak
+}
+
+new pInfo[MAX_PLAYERS][player_data];
+
 /*
      ___      _
     / __| ___| |_ _  _ _ __
@@ -28,9 +37,6 @@ public OnGameModeInit()
 	
 	// grove street
 	AddPlayerClass(2, 2495.3547, -1688.2319, 13.6774, 351.1646, WEAPON_DEAGLE, 500);
-	
-	// trailer park
-	AddPlayerClass(32, -965.5652,-543.6519,25.9609,305.0317, WEAPON_DEAGLE, 500);
 	
 	// bikes, quads, dirtbikes for freeroam at skatepark
 	AddStaticVehicle(471,1930.8300,-1397.3861,13.0497,156.4650,120,112);
@@ -60,6 +66,11 @@ public OnGameModeExit()
 
 public OnPlayerConnect(playerid)
 {
+	// REFRESH ALL ENUMS FOR PLAYERS JOINING
+	pInfo[playerid][player_skin] = 2; // set default skin id enum for every1 joining
+	pInfo[playerid][player_killstreak] = 0;
+	pInfo[playerid][player_headshotsInArow] = 0;
+
 	new string[128], playerName[MAX_PLAYER_NAME];
 	GetPlayerName(playerid, playerName, MAX_PLAYER_NAME);
 	format(string, sizeof string, "%s has joined the server! Use '/help' to see the commands.", playerName);
@@ -96,6 +107,11 @@ public OnPlayerRequestClass(playerid, classid)
 
 public OnPlayerSpawn(playerid)
 {
+	
+	// reset killstreaks on player spawn
+	pInfo[playerid][player_killstreak] = 0;
+	pInfo[playerid][player_headshotsInArow] = 0;
+	
 	if(GetPlayerScore(playerid) == 0) // if they're in arena 0 aka freeroam
 	{
 		new Float:RandomSpawn[][6] =
@@ -110,13 +126,16 @@ public OnPlayerSpawn(playerid)
 
 		new rand = random(sizeof(RandomSpawn));
 		
-		// set the player's team back to NO_TEAM
+		// set the player's team back to NO_TEAM... again... just in case...
 		SetPlayerTeam(playerid, NO_TEAM);
 
 		SetPlayerVirtualWorld(playerid, 0);
 		SetPlayerInterior(playerid, 0);
 		SetPlayerPos(playerid, RandomSpawn[rand][0], RandomSpawn[rand][1], RandomSpawn[rand][2]);
 		SetPlayerFacingAngle(playerid, RandomSpawn[rand][3]);
+		
+		// give the player back their saved skin player_skin from enum
+		SetPlayerSkin(playerid, pInfo[playerid][player_skin]);
 
 		return 1;
 	}
@@ -423,11 +442,11 @@ public OnPlayerSpawn(playerid)
 		{
 			new Float:RandomSpawn[][5] =
 			{
-				{471.1909, -1758.0557, 5.6072, 354.4272},
-				{476.3249, -1748.8619, 9.3771, 186.9302},
-				{472.2213, -1772.1322, 14.1200, 285.6509},
-				{563.0250, -1763.8529, 5.7946, 224.6185},
-				{522.7793, -1811.2328, 6.5781, 23.4603}
+				{562.6348, -1779.1512, 5.8641, 270.2761},
+				{562.8201, -1766.5792, 5.8062, 230.3213},
+				{564.9728, -1770.8113, 5.8200, 342.9984},
+				{579.9589, -1777.0797, 8.5368, 233.6590},
+				{615.4469, -1795.2113, 9.2089, 279.3222}
 			};
 			
 			new rand = random(sizeof(RandomSpawn));
@@ -464,6 +483,136 @@ public OnPlayerSpawn(playerid)
 public OnPlayerDeath(playerid, killerid, reason)
 {
 	SendDeathMessage(killerid, playerid, reason);
+	
+	pInfo[playerid][player_killstreak] = 0;
+	pInfo[killerid][player_killstreak] += 1;
+	
+	if(pInfo[killerid][player_killstreak] == 5)
+	{
+		new string[128];
+		new pName[MAX_PLAYER_NAME + 1];
+		GetPlayerName(killerid, pName, sizeof(pName));
+		
+		format(string, sizeof(string),"%s is on a 5 killstreak! Holy shit!", pName)
+		SendClientMessageToAll(COLOR_WHITE, string);
+		return 1;
+	}
+	
+	if(pInfo[killerid][player_killstreak] == 10)
+	{
+		new string[128];
+		new pName[MAX_PLAYER_NAME + 1];
+		GetPlayerName(killerid, pName, sizeof(pName));
+		
+		format(string, sizeof(string),"%s is on a 10 killstreak! Wicked Sick!", pName)
+		SendClientMessageToAll(COLOR_WHITE, string);
+		return 1;
+	}
+	
+	if(pInfo[killerid][player_killstreak] == 15)
+	{
+		new string[128];
+		new pName[MAX_PLAYER_NAME + 1];
+		GetPlayerName(killerid, pName, sizeof(pName));
+		
+		format(string, sizeof(string),"%s is on a 15 killstreak! ULTRA-KILL!", pName)
+		SendClientMessageToAll(COLOR_WHITE, string);
+		return 1;
+	}
+	
+	if(pInfo[killerid][player_killstreak] == 20)
+	{
+		new string[128];
+		new pName[MAX_PLAYER_NAME + 1];
+		GetPlayerName(killerid, pName, sizeof(pName));
+		
+		format(string, sizeof(string),"%s is on a 20 killstreak! UNSTOPPABLE!", pName)
+		SendClientMessageToAll(COLOR_WHITE, string);
+		return 1;
+	}
+	
+	if(pInfo[killerid][player_killstreak] == 25)
+	{
+		new string[128];
+		new pName[MAX_PLAYER_NAME + 1];
+		GetPlayerName(killerid, pName, sizeof(pName));
+		
+		format(string, sizeof(string),"%s is on a 25 killstreak! TACTICAL NUKE INCOMING!!!", pName)
+		SendClientMessageToAll(COLOR_WHITE, string);
+		
+		SetTimer("TacticalNuke", 3000, false); // 5 second timer b4 nuke
+		PlayerPlaySound(killerid, 3200, 0.0, 0.0, 0.0);
+		SetPlayerTime(killerid, 0, 0);
+		SetPlayerWeather(killerid, 8);
+		
+		for(new i = 0; i < MAX_PLAYERS; i++)
+		{
+			if(GetPlayerScore(i) == GetPlayerScore(killerid))
+			{
+				PlayerPlaySound(i, 3200, 0.0, 0.0, 0.0);
+				SetPlayerTime(i, 0, 0);
+				SetPlayerWeather(i, 8);
+			}
+		}
+		return 1;
+	}
+	
+	else
+	{
+		return 1;
+	}
+}
+
+forward TacticalNuke(killerid);
+public TacticalNuke(killerid)
+{
+	// EXPLODE
+	new Float:x, Float:y, Float:z;
+	GetPlayerPos(killerid, x, y, z);
+	
+	PlayerPlaySound(killerid, 3200, 0.0, 0.0, 0.0);
+	for(new i = 0; i < MAX_PLAYERS; i++)
+		{
+			if(GetPlayerScore(i) == GetPlayerScore(killerid))
+			{
+				PlayerPlaySound(i, 3200, 0.0, 0.0, 0.0);
+			}
+		}
+	
+	CreateExplosion(x, y, z, 2, 10000.0);
+	SetTimer("TacticalNukeAftermath", 4000, false);
+	return 1;
+}
+
+forward TacticalNukeAftermath(killerid);
+public TacticalNukeAftermath(killerid)
+{
+	// freeroam
+	SetPlayerTime(killerid, 12, 0);
+	SetPlayerWeather(killerid, 0);
+	// set the score so we identify which lobby they're in
+	SetPlayerScore(killerid, 0);
+	// set the player's team back to NO_TEAM
+	SetPlayerTeam(killerid, NO_TEAM);
+	// all the lobby specific spawns/skins/weapons code is in OnPlayerSpawn func
+	SpawnPlayer(killerid);
+	
+	for(new i = 0; i < MAX_PLAYERS; i++) // send every1 back to freeroam
+	{
+		if(GetPlayerScore(i) == GetPlayerScore(killerid))
+		{
+			// freeroam
+			SetPlayerTime(i, 12, 0);
+			SetPlayerWeather(i, 0);
+			// set the score so we identify which lobby they're in
+			SetPlayerScore(i, 0);
+			// set the player's team back to NO_TEAM
+			SetPlayerTeam(i, NO_TEAM);
+			// all the lobby specific spawns/skins/weapons code is in OnPlayerSpawn func
+			SpawnPlayer(i);
+		}
+	}
+	
 	return 1;
 }
 
@@ -709,6 +858,29 @@ CMD:changeteam(playerid, params[])
 			SpawnPlayer(playerid);
 		}
 		
+		if(GetPlayerScore(playerid) == 6) // if player has a score of 4, meaning they're in the burgershot battles team deathmatch
+		{
+			new id;
+			
+			if (sscanf(params, "i", id) != 0)
+			{
+				SendClientMessage(playerid, COLOR_WHITE, " ");
+				SendClientMessage(playerid, COLOR_WHITE, "[-- Teams List --]");
+				SendClientMessage(playerid, COLOR_WHITE, "0 - Skins");
+				SendClientMessage(playerid, COLOR_WHITE, "1 - Mexicans");
+				return 1;
+			}
+			
+			if(id > 3)
+			{
+				SendClientMessage(playerid, COLOR_WHITE, "That's an invalid Team ID for this arena. Check '/changeteam' again.");
+				return 1;
+			}
+			
+			SetPlayerTeam(playerid, id);
+			SpawnPlayer(playerid);
+		}
+		
 		return 1;
 	}
 }
@@ -827,6 +999,7 @@ CMD:skin(playerid, params[])
 			return 1;
 		}
 		
+		pInfo[playerid][player_skin] = id;
 		SetPlayerSkin(playerid, id);
 		return 1;
 	}
@@ -1229,11 +1402,32 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 	if(issuerid != INVALID_PLAYER_ID && bodypart == 9)
 	{
 		// BOOM HEADSHOT
-		PlayerPlaySound(issuerid, 1190, 0.0, 0.0, 0.0);
+		PlayerPlaySound(issuerid, 3200, 0.0, 0.0, 0.0);
 		SetPlayerHealth(playerid, 0.0);
+		
+		pInfo[issuerid][player_headshotsInArow] += 1;
+		
+		if(pInfo[issuerid][player_headshotsInArow] > 2)
+		{
+			new string[128];
+			new pName[MAX_PLAYER_NAME + 1];
+			GetPlayerName(issuerid, pName, sizeof(pName));
+			
+			format(string, sizeof(string), "%s has hit %i headshots in a row!", pName, pInfo[issuerid][player_headshotsInArow])
+			
+			SendClientMessageToAll(COLOR_WHITE, string);
+			
+			return 1;
+		}
+		
 		return 1;
 	}
-	return 1;
+	
+	else
+	{
+		pInfo[issuerid][player_headshotsInArow] = 0;
+		return 1;
+	}
 }
 
 public OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
